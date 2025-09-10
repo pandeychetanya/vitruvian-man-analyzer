@@ -294,6 +294,16 @@
                 inset 0 0 0 2px rgba(255, 255, 255, 0.5);
         }
 
+        .pose-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
         .image-preview::before {
             content: '';
             position: absolute;
@@ -667,6 +677,7 @@
             <div class="analysis-section" id="analysisSection" style="display: none;">
                 <div class="image-preview">
                     <img id="previewImage" alt="Your analyzed image">
+                    <canvas id="poseCanvas" class="pose-canvas"></canvas>
                 </div>
                 
                 <div class="results">
@@ -872,11 +883,15 @@
             const geometry = analyzeGeometry(bodyPoints);
             const vitruvianScore = calculateVitruvianScore(proportions, geometry);
             
+            // Draw the pose visualization
+            drawPoseVisualization(keypoints, bodyPoints, imageWidth, imageHeight);
+            
             return {
                 vitruvian_score: vitruvianScore,
                 proportions: proportions,
                 geometry: geometry,
-                analysis: generateSimpleAnalysis(vitruvianScore, proportions, geometry)
+                analysis: generateSimpleAnalysis(vitruvianScore, proportions, geometry),
+                keypoints: keypoints
             };
         }
 
@@ -1038,6 +1053,157 @@
             return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
         }
 
+        function drawPoseVisualization(keypoints, bodyPoints, originalWidth, originalHeight) {
+            const canvas = document.getElementById('poseCanvas');
+            const img = document.getElementById('previewImage');
+            const ctx = canvas.getContext('2d');
+
+            // Wait for image to load and get its displayed dimensions
+            img.onload = function() {
+                const displayedWidth = img.offsetWidth;
+                const displayedHeight = img.offsetHeight;
+                
+                // Set canvas size to match displayed image
+                canvas.width = displayedWidth;
+                canvas.height = displayedHeight;
+                canvas.style.width = displayedWidth + 'px';
+                canvas.style.height = displayedHeight + 'px';
+
+                // Calculate scale factors
+                const scaleX = displayedWidth / originalWidth;
+                const scaleY = displayedHeight / originalHeight;
+
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw pose skeleton
+                drawSkeleton(ctx, keypoints, scaleX, scaleY);
+                
+                // Draw measurement lines
+                drawMeasurementLines(ctx, bodyPoints, scaleX, scaleY);
+            };
+
+            // If image is already loaded
+            if (img.complete) {
+                img.onload();
+            }
+        }
+
+        function drawSkeleton(ctx, keypoints, scaleX, scaleY) {
+            const adjacentKeyPoints = [
+                [5, 6], [5, 7], [7, 9], [6, 8], [8, 10], // Arms
+                [5, 11], [6, 12], [11, 12], // Torso
+                [11, 13], [13, 15], [12, 14], [14, 16], // Legs
+                [1, 2], [0, 1], [0, 2] // Face
+            ];
+
+            // Draw connections
+            ctx.strokeStyle = '#daa520';
+            ctx.lineWidth = 3;
+            ctx.shadowColor = 'rgba(218, 165, 32, 0.3)';
+            ctx.shadowBlur = 5;
+
+            adjacentKeyPoints.forEach(([i, j]) => {
+                const kp1 = keypoints[i];
+                const kp2 = keypoints[j];
+                
+                if (kp1.score > 0.3 && kp2.score > 0.3) {
+                    ctx.beginPath();
+                    ctx.moveTo(kp1.position.x * scaleX, kp1.position.y * scaleY);
+                    ctx.lineTo(kp2.position.x * scaleX, kp2.position.y * scaleY);
+                    ctx.stroke();
+                }
+            });
+
+            // Draw keypoints
+            ctx.shadowBlur = 0;
+            keypoints.forEach((keypoint, i) => {
+                if (keypoint.score > 0.3) {
+                    const x = keypoint.position.x * scaleX;
+                    const y = keypoint.position.y * scaleY;
+                    
+                    // Different colors for different body parts
+                    if ([0, 1, 2].includes(i)) {
+                        ctx.fillStyle = '#ff6b6b'; // Head - red
+                    } else if ([5, 6, 7, 8, 9, 10].includes(i)) {
+                        ctx.fillStyle = '#4ecdc4'; // Arms - teal
+                    } else if ([11, 12].includes(i)) {
+                        ctx.fillStyle = '#45b7d1'; // Hips - blue
+                    } else {
+                        ctx.fillStyle = '#96ceb4'; // Legs - green
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 6, 0, 2 * Math.PI);
+                    ctx.fill();
+                    
+                    // White border
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            });
+        }
+
+        function drawMeasurementLines(ctx, bodyPoints, scaleX, scaleY) {
+            if (!bodyPoints.nose || !bodyPoints.leftShoulder || !bodyPoints.rightShoulder) return;
+
+            // Draw measurement lines with labels
+            ctx.strokeStyle = '#ff4757';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+
+            // Head to shoulder measurement
+            const shoulderCenter = {
+                x: (bodyPoints.leftShoulder.x + bodyPoints.rightShoulder.x) / 2,
+                y: (bodyPoints.leftShoulder.y + bodyPoints.rightShoulder.y) / 2
+            };
+
+            ctx.beginPath();
+            ctx.moveTo(bodyPoints.nose.x * scaleX, bodyPoints.nose.y * scaleY);
+            ctx.lineTo(shoulderCenter.x * scaleX, shoulderCenter.y * scaleY);
+            ctx.stroke();
+
+            // Arm span measurement
+            if (bodyPoints.leftWrist && bodyPoints.rightWrist) {
+                ctx.strokeStyle = '#ffa502';
+                ctx.beginPath();
+                ctx.moveTo(bodyPoints.leftWrist.x * scaleX, bodyPoints.leftWrist.y * scaleY);
+                ctx.lineTo(bodyPoints.rightWrist.x * scaleX, bodyPoints.rightWrist.y * scaleY);
+                ctx.stroke();
+            }
+
+            // Total height measurement
+            if (bodyPoints.leftAnkle && bodyPoints.rightAnkle) {
+                const ankleCenter = {
+                    x: (bodyPoints.leftAnkle.x + bodyPoints.rightAnkle.x) / 2,
+                    y: (bodyPoints.leftAnkle.y + bodyPoints.rightAnkle.y) / 2
+                };
+
+                ctx.strokeStyle = '#2ed573';
+                ctx.beginPath();
+                ctx.moveTo(bodyPoints.nose.x * scaleX, bodyPoints.nose.y * scaleY);
+                ctx.lineTo(ankleCenter.x * scaleX, ankleCenter.y * scaleY);
+                ctx.stroke();
+            }
+
+            // Reset line dash
+            ctx.setLineDash([]);
+
+            // Add measurement labels
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Head', bodyPoints.nose.x * scaleX, (bodyPoints.nose.y * scaleY) - 10);
+            
+            if (bodyPoints.leftWrist && bodyPoints.rightWrist) {
+                ctx.fillText('Arm Span', 
+                    ((bodyPoints.leftWrist.x + bodyPoints.rightWrist.x) / 2) * scaleX, 
+                    ((bodyPoints.leftWrist.y + bodyPoints.rightWrist.y) / 2) * scaleY - 10
+                );
+            }
+        }
+
         function displayResults(data) {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('analysisSection').style.display = 'block';
@@ -1118,6 +1284,11 @@
             
             // Reset analysis text
             document.getElementById('analysisText').textContent = '';
+            
+            // Clear pose canvas
+            const canvas = document.getElementById('poseCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         function showError(message) {
