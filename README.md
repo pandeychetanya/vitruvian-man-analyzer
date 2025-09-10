@@ -2,13 +2,12 @@
 
 *Created with passion by Chetanya Pandey*
 
-Welcome to a fascinating journey where Renaissance art meets cutting-edge AI! Ever wondered how your pose compares to Leonardo da Vinci's iconic Vitruvian Man? Well, wonder no more! This delightful application takes your photos and reveals the hidden geometry within, measuring how closely you match the master's vision of perfect human proportions.
+Welcome to a fascinating journey where Renaissance art meets cutting-edge AI! Do you wanna know how your pose compares to Leonardo da Vinci's iconic Vitruvian Man? Well, wonder no more! This delightful application takes your photos and reveals the hidden geometry within, measuring how closely you match the master's vision of perfect human proportions.
 
 Imagine having a conversation with Leonardo himself about the divine mathematics of the human form - except instead of Italian, he speaks in Python and JavaScript! This project is where art history gets a high-tech makeover, combining the timeless beauty of classical proportions with the magic of modern computer vision.
 
-## ✨ What Makes This Special?
+## ✨ What Makes This Magical?
 
-This isn't just another tech project - it's a bridge between worlds! Here's what makes it absolutely magical:
 
 **The AI Artist's Eye**: Our digital assistant has been trained to see human bodies the way Renaissance masters did, detecting every curve, line, and proportion with the precision of a master sculptor's chisel.
 
