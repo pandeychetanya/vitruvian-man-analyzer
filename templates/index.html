@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitruvian Man Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vitruvian Man Analyzer</h1>
+            <p>Analyze human poses using Leonardo da Vinci's perfect proportions</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <p>Drop an image here or click to select</p>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+                            Select Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section" id="analysisSection" style="display: none;">
+                <div class="image-preview">
+                    <img id="previewImage" alt="Uploaded image">
+                </div>
+                
+                <div class="results">
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span id="scoreValue">--</span>
+                            <small>/100</small>
+                        </div>
+                        <h3 id="scoreLevel">Analyzing...</h3>
+                    </div>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <label>Head to Height Ratio</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="headRatio"></div>
+                                <span id="headRatioText">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <label>Arm Span to Height</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="armSpan"></div>
+                                <span id="armSpanText">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <label>Symmetry Score</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="symmetry"></div>
+                                <span id="symmetryText">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <label>Square Fit Ratio</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="squareFit"></div>
+                                <span id="squareFitText">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-text" id="analysisText">
+                        <!-- Analysis details will be populated here -->
+                    </div>
+                    
+                    <button class="new-analysis-btn" onclick="resetAnalysis()">
+                        Analyze Another Image
+                    </button>
+                </div>
+            </div>
+
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing pose and proportions...</p>
+            </div>
+        </main>
+
+        <footer>
+            <div class="info-section">
+                <h3>About the Vitruvian Man</h3>
+                <p>
+                    Leonardo da Vinci's Vitruvian Man represents the ideal human body proportions 
+                    based on the correlations of ideal human body proportions with geometry described 
+                    by the ancient Roman architect Vitruvius. This analyzer uses AI to measure how 
+                    closely a human pose matches these classical proportions.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
