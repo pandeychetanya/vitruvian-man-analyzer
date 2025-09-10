@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vitruvian Man Analyzer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Vitruvian Man Analyzer - Renaissance Art History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700;900&family=Libre+Baskerville:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,20 +13,15 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
-            line-height: 1.7;
-            color: #2c1810;
-            background: linear-gradient(135deg, 
-                #f4f1ec 0%, 
-                #ede4d3 25%, 
-                #e8dcc0 50%, 
-                #d4c4a8 75%, 
-                #c9b896 100%
-            );
-            min-height: 100vh;
+            font-family: 'Libre Baskerville', serif;
+            line-height: 1.8;
+            color: #3a2f2a;
+            background: #f9f6f0;
             position: relative;
+            overflow-x: hidden;
         }
 
+        /* Artistic background with old paper texture */
         body::before {
             content: '';
             position: fixed;
@@ -34,120 +29,148 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" patternUnits="userSpaceOnUse" width="100" height="100"><rect fill="%23f8f5f0" width="100" height="100"/><g opacity="0.1"><circle cx="20" cy="20" r="1" fill="%23d4af37"/><circle cx="80" cy="40" r="0.5" fill="%238b4513"/><circle cx="30" cy="70" r="0.8" fill="%23cd853f"/><circle cx="70" cy="80" r="1.2" fill="%23daa520"/><circle cx="50" cy="30" r="0.3" fill="%23b8860b"/><circle cx="10" cy="90" r="0.7" fill="%23d2691e"/></g></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>') repeat;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(218, 165, 32, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(160, 82, 45, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, #f9f6f0 0%, #f4f0e8 25%, #ede6d6 50%, #f7f3eb 75%, #f9f6f0 100%);
+            z-index: -2;
+        }
+
+        /* Subtle manuscript texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(218, 165, 32, 0.15) 1px, transparent 0);
+            background-size: 20px 20px;
             opacity: 0.3;
             z-index: -1;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 30px;
-            position: relative;
+            padding: 40px 20px;
         }
 
+        /* Elegant header */
         header {
             text-align: center;
             margin-bottom: 60px;
-            padding: 40px 0;
+            padding: 60px 0;
             position: relative;
+            background: linear-gradient(135deg, 
+                rgba(218, 165, 32, 0.05) 0%, 
+                rgba(255, 255, 255, 0.8) 30%, 
+                rgba(160, 82, 45, 0.05) 100%
+            );
+            border-radius: 30px;
+            border: 2px solid rgba(218, 165, 32, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
         }
 
         header::before {
-            content: '';
+            content: '✦';
             position: absolute;
-            top: 0;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #b8860b 50%, #d4af37 80%, transparent 100%);
-            border-radius: 2px;
+            font-size: 2em;
+            color: #daa520;
+            opacity: 0.6;
         }
 
         header::after {
-            content: '';
+            content: '✦';
             position: absolute;
-            bottom: 0;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #b8860b 50%, #d4af37 80%, transparent 100%);
-            border-radius: 2px;
+            font-size: 2em;
+            color: #daa520;
+            opacity: 0.6;
         }
 
-        header h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3.5em;
-            font-weight: 600;
-            margin-bottom: 15px;
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
             color: #8b4513;
-            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             letter-spacing: 2px;
         }
 
-        header p {
-            font-size: 1.4em;
-            color: #6b4423;
-            font-style: italic;
+        .subtitle {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.5rem;
+            color: #a0522d;
+            margin-bottom: 15px;
             font-weight: 400;
         }
 
-        .subtitle {
-            font-family: 'Crimson Text', serif;
-            font-size: 1.1em;
-            color: #8b6f47;
-            margin-top: 10px;
+        .description {
+            font-size: 1.2rem;
+            color: #6b4423;
+            max-width: 600px;
+            margin: 0 auto;
             font-style: italic;
         }
 
+        /* Beautiful main content area */
         main {
             background: linear-gradient(145deg, 
-                rgba(255, 255, 255, 0.95) 0%, 
-                rgba(248, 245, 240, 0.9) 50%, 
-                rgba(255, 255, 255, 0.95) 100%
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(249, 246, 240, 0.95) 50%, 
+                rgba(255, 255, 255, 0.9) 100%
             );
-            border-radius: 20px;
-            padding: 50px;
+            border-radius: 25px;
+            padding: 60px;
+            margin-bottom: 40px;
             box-shadow: 
-                0 25px 50px rgba(139, 69, 19, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8),
-                0 0 0 1px rgba(212, 175, 55, 0.1);
-            margin-bottom: 50px;
-            backdrop-filter: blur(10px);
-            border: 2px solid transparent;
-            background-clip: padding-box;
+                0 30px 80px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(218, 165, 32, 0.15);
             position: relative;
         }
 
         main::before {
             content: '';
             position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            bottom: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 15px;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #daa520 20%, 
+                #cd853f 50%, 
+                #daa520 80%, 
+                transparent 100%
+            );
+            border-radius: 25px 25px 0 0;
         }
 
+        /* Upload section styling */
         .upload-section {
             margin-bottom: 50px;
         }
 
         .upload-area {
-            border: 3px dashed #d4af37;
+            border: 3px dashed #cd853f;
             border-radius: 20px;
-            padding: 70px 50px;
+            padding: 80px 60px;
             text-align: center;
-            background: linear-gradient(145deg, 
-                rgba(248, 245, 240, 0.8) 0%, 
-                rgba(255, 252, 247, 0.9) 50%, 
-                rgba(248, 245, 240, 0.8) 100%
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.7) 0%, 
+                rgba(255, 248, 240, 0.9) 50%, 
+                rgba(255, 255, 255, 0.7) 100%
             );
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -156,77 +179,70 @@
         .upload-area::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, 
-                #d4af37 0%, 
-                #b8860b 25%, 
-                #cd853f 50%, 
-                #daa520 75%, 
-                #d4af37 100%
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, 
+                rgba(218, 165, 32, 0.1) 0%, 
+                transparent 70%
             );
-            border-radius: 20px;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            transform: scale(0);
+            transition: transform 0.6s ease;
         }
 
         .upload-area:hover::before {
-            opacity: 0.3;
+            transform: scale(1);
         }
 
         .upload-area:hover {
-            border-color: #b8860b;
-            background: linear-gradient(145deg, 
-                rgba(255, 252, 247, 0.95) 0%, 
-                rgba(248, 245, 240, 0.9) 50%, 
-                rgba(255, 252, 247, 0.95) 100%
+            border-color: #daa520;
+            background: linear-gradient(135deg, 
+                rgba(255, 248, 240, 0.95) 0%, 
+                rgba(255, 255, 255, 0.9) 50%, 
+                rgba(255, 248, 240, 0.95) 100%
             );
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(139, 69, 19, 0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(139, 69, 19, 0.15);
         }
 
         .upload-area.dragover {
-            border-color: #8b4513;
-            background: linear-gradient(145deg, 
-                rgba(212, 175, 55, 0.1) 0%, 
-                rgba(255, 252, 247, 0.95) 50%, 
-                rgba(212, 175, 55, 0.1) 100%
+            border-color: #b8860b;
+            background: linear-gradient(135deg, 
+                rgba(218, 165, 32, 0.1) 0%, 
+                rgba(255, 248, 240, 0.95) 50%, 
+                rgba(218, 165, 32, 0.1) 100%
             );
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
+            transform: scale(1.02);
         }
 
         .upload-icon {
-            font-size: 5em;
-            margin-bottom: 25px;
-            color: #d4af37;
-            text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.2);
+            font-size: 6rem;
+            color: #cd853f;
+            margin-bottom: 30px;
+            display: block;
         }
 
         .upload-content p {
-            font-family: 'Crimson Text', serif;
-            font-size: 1.4em;
-            margin-bottom: 25px;
+            font-size: 1.4rem;
             color: #6b4423;
-            font-weight: 600;
+            margin-bottom: 30px;
+            font-weight: 400;
         }
 
         .upload-btn {
-            background: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #8b4513 100%);
-            color: #fff;
+            background: linear-gradient(135deg, #daa520 0%, #cd853f 50%, #b8860b 100%);
+            color: white;
             border: none;
-            padding: 18px 40px;
-            font-family: 'Cinzel', serif;
-            font-size: 1.1em;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border-radius: 30px;
+            padding: 20px 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.4s ease;
             text-transform: uppercase;
+            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
         }
@@ -238,8 +254,12 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.4) 50%, 
+                transparent 100%
+            );
+            transition: left 0.6s ease;
         }
 
         .upload-btn:hover::before {
@@ -247,15 +267,16 @@
         }
 
         .upload-btn:hover {
+            background: linear-gradient(135deg, #f4d03f 0%, #e6b800 50%, #d4a300 100%);
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.3);
-            background: linear-gradient(135deg, #daa520 0%, #cd853f 50%, #a0522d 100%);
+            box-shadow: 0 20px 40px rgba(218, 165, 32, 0.4);
         }
 
+        /* Analysis section */
         .analysis-section {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 50px;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 60px;
             align-items: start;
         }
 
@@ -266,268 +287,263 @@
         .image-preview img {
             width: 100%;
             height: auto;
-            border-radius: 15px;
+            border-radius: 20px;
+            border: 4px solid #daa520;
             box-shadow: 
-                0 20px 40px rgba(139, 69, 19, 0.2),
-                0 0 0 3px rgba(212, 175, 55, 0.1),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-            border: 2px solid rgba(212, 175, 55, 0.3);
+                0 25px 50px rgba(139, 69, 19, 0.2),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.5);
         }
 
         .image-preview::before {
             content: '';
             position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: linear-gradient(45deg, #d4af37, #b8860b, #cd853f, #daa520);
-            border-radius: 20px;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            background: linear-gradient(45deg, 
+                #daa520, #cd853f, #daa520, #b8860b
+            );
+            background-size: 400% 400%;
+            border-radius: 25px;
             z-index: -1;
-            opacity: 0.1;
+            opacity: 0.3;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .results {
             display: flex;
             flex-direction: column;
-            gap: 35px;
+            gap: 40px;
         }
 
+        /* Score display */
         .score-display {
             text-align: center;
-            padding: 30px;
-            background: linear-gradient(145deg, 
-                rgba(212, 175, 55, 0.05) 0%, 
-                rgba(255, 255, 255, 0.8) 50%, 
-                rgba(212, 175, 55, 0.05) 100%
+            padding: 40px;
+            background: linear-gradient(135deg, 
+                rgba(218, 165, 32, 0.08) 0%, 
+                rgba(255, 255, 255, 0.9) 50%, 
+                rgba(205, 133, 63, 0.08) 100%
             );
-            border-radius: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 25px;
+            border: 2px solid rgba(218, 165, 32, 0.2);
+            box-shadow: 0 15px 40px rgba(139, 69, 19, 0.1);
         }
 
         .score-circle {
-            width: 140px;
-            height: 140px;
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #d4af37 0%, #b8860b 30%, #8b4513 100%);
+            background: linear-gradient(135deg, #daa520 0%, #cd853f 50%, #b8860b 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 25px;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 
-                0 15px 30px rgba(139, 69, 19, 0.3),
-                inset 0 2px 4px rgba(255, 255, 255, 0.2),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0 auto 30px;
+            color: white;
             position: relative;
+            box-shadow: 
+                0 20px 40px rgba(139, 69, 19, 0.3),
+                inset 0 4px 8px rgba(255, 255, 255, 0.2);
         }
 
         .score-circle::before {
             content: '';
             position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
         }
 
         .score-circle span {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2em;
-            line-height: 1;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .score-circle small {
-            font-size: 0.9em;
+            font-size: 1rem;
             opacity: 0.9;
-            font-family: 'Cormorant Garamond', serif;
+            margin-top: 5px;
         }
 
         #scoreLevel {
-            font-family: 'Cinzel', serif;
-            font-size: 1.8em;
-            margin: 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
             color: #8b4513;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
+        .score-description {
+            font-size: 1.1rem;
+            color: #6b4423;
+            font-style: italic;
+        }
+
+        /* Metrics styling */
         .metrics {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 25px;
-            padding: 30px;
-            background: linear-gradient(145deg, 
-                rgba(248, 245, 240, 0.6) 0%, 
-                rgba(255, 255, 255, 0.8) 50%, 
-                rgba(248, 245, 240, 0.6) 100%
+            padding: 40px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.9) 0%, 
+                rgba(249, 246, 240, 0.95) 50%, 
+                rgba(255, 255, 255, 0.9) 100%
             );
-            border-radius: 18px;
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.08);
+            border-radius: 20px;
+            border: 1px solid rgba(218, 165, 32, 0.15);
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.1);
         }
 
         .metric {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            text-align: center;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            border: 1px solid rgba(218, 165, 32, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .metric:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.15);
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            color: #cd853f;
+            margin-bottom: 15px;
         }
 
         .metric label {
-            font-family: 'Cinzel', serif;
-            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
             color: #8b4513;
-            font-size: 1.1em;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            display: block;
+            margin-bottom: 15px;
         }
 
-        .metric-bar {
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.1) 0%, 
-                rgba(139, 69, 19, 0.05) 100%
-            );
-            border-radius: 12px;
-            height: 24px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: inset 0 2px 4px rgba(139, 69, 19, 0.1);
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6b4423;
+            margin-bottom: 10px;
         }
 
-        .metric-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #8b4513 100%);
-            border-radius: 12px;
-            transition: width 1s ease;
-            width: 0%;
-            position: relative;
-            box-shadow: 
-                inset 0 1px 2px rgba(255, 255, 255, 0.3),
-                0 1px 3px rgba(139, 69, 19, 0.2);
-        }
-
-        .metric-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(180deg, 
-                rgba(255, 255, 255, 0.2) 0%, 
-                transparent 100%
-            );
-            border-radius: 12px 12px 0 0;
-        }
-
-        .metric-bar span {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.95em;
+        .metric-status {
+            font-size: 0.95rem;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-weight: 600;
-            color: #6b4423;
-            font-family: 'Cormorant Garamond', serif;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
+        .excellent {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .good {
+            background: rgba(255, 193, 7, 0.1);
+            color: #856404;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .fair {
+            background: rgba(255, 152, 0, 0.1);
+            color: #d39e00;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .needs-work {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        /* Analysis text */
         .analysis-text {
-            background: linear-gradient(145deg, 
-                rgba(248, 245, 240, 0.9) 0%, 
-                rgba(255, 252, 247, 0.95) 50%, 
-                rgba(248, 245, 240, 0.9) 100%
+            background: linear-gradient(135deg, 
+                rgba(255, 248, 240, 0.9) 0%, 
+                rgba(255, 255, 255, 0.95) 50%, 
+                rgba(255, 248, 240, 0.9) 100%
             );
-            padding: 30px;
-            border-radius: 15px;
-            border-left: 5px solid #d4af37;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-            border-right: 1px solid rgba(212, 175, 55, 0.3);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            white-space: pre-line;
-            font-family: 'Crimson Text', serif;
-            font-size: 1.05em;
-            line-height: 1.7;
+            padding: 40px;
+            border-radius: 20px;
+            border-left: 6px solid #daa520;
+            border-top: 1px solid rgba(218, 165, 32, 0.2);
+            border-right: 1px solid rgba(218, 165, 32, 0.2);
+            border-bottom: 1px solid rgba(218, 165, 32, 0.2);
+            font-size: 1.1rem;
+            line-height: 1.8;
             color: #4a3626;
-            box-shadow: 
-                0 10px 25px rgba(139, 69, 19, 0.1),
-                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px rgba(139, 69, 19, 0.1);
         }
 
-        .detailed-analysis {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(212, 175, 55, 0.3);
-            font-style: italic;
-            color: #6b4423;
+        .analysis-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #8b4513;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
+        /* New analysis button */
         .new-analysis-btn {
             background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #654321 100%);
-            color: #fff;
+            color: white;
             border: none;
             padding: 18px 40px;
-            font-family: 'Cinzel', serif;
-            font-size: 1.1em;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border-radius: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.4s ease;
             align-self: center;
             text-transform: uppercase;
+            letter-spacing: 1px;
             position: relative;
             overflow: hidden;
-        }
-
-        .new-analysis-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
-            transition: left 0.5s ease;
-        }
-
-        .new-analysis-btn:hover::before {
-            left: 100%;
         }
 
         .new-analysis-btn:hover {
             background: linear-gradient(135deg, #a0522d 0%, #8b4513 50%, #654321 100%);
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.4);
+            box-shadow: 0 15px 35px rgba(139, 69, 19, 0.4);
         }
 
+        /* Loading animation */
         .loading {
             text-align: center;
-            padding: 80px 50px;
+            padding: 100px 50px;
         }
 
         .spinner {
             width: 80px;
             height: 80px;
-            border: 4px solid rgba(212, 175, 55, 0.2);
-            border-top: 4px solid #d4af37;
+            border: 6px solid rgba(218, 165, 32, 0.2);
+            border-top: 6px solid #daa520;
             border-radius: 50%;
-            animation: spin 1.5s linear infinite;
-            margin: 0 auto 30px;
-        }
-
-        .loading p {
-            font-family: 'Crimson Text', serif;
-            font-size: 1.3em;
-            color: #8b4513;
-            font-style: italic;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 40px;
         }
 
         @keyframes spin {
@@ -535,50 +551,42 @@
             100% { transform: rotate(360deg); }
         }
 
-        .info-section {
-            background: linear-gradient(145deg, 
-                rgba(139, 69, 19, 0.8) 0%, 
-                rgba(160, 82, 45, 0.9) 50%, 
-                rgba(139, 69, 19, 0.8) 100%
+        .loading p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: #8b4513;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, 
+                rgba(139, 69, 19, 0.9) 0%, 
+                rgba(160, 82, 45, 0.95) 50%, 
+                rgba(139, 69, 19, 0.9) 100%
             );
-            backdrop-filter: blur(15px);
+            color: #f9f6f0;
+            padding: 60px;
             border-radius: 25px;
-            padding: 50px;
-            color: #fff;
             text-align: center;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(139, 69, 19, 0.2);
+            margin-top: 40px;
         }
 
-        .info-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);
-        }
-
-        .info-section h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 2em;
+        footer h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
             margin-bottom: 25px;
-            color: #f4f1ec;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            color: #f4d03f;
         }
 
-        .info-section p {
-            font-family: 'Cormorant Garamond', serif;
-            opacity: 0.95;
+        footer p {
+            font-size: 1.2rem;
             line-height: 1.8;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            font-size: 1.15em;
+            opacity: 0.95;
         }
 
         .error-message {
@@ -588,35 +596,45 @@
                 rgba(220, 53, 69, 0.1) 100%
             );
             color: #721c24;
-            padding: 20px 25px;
+            padding: 25px 30px;
             border-radius: 15px;
-            margin: 25px 0;
+            margin: 30px 0;
             border: 1px solid #f5c6cb;
-            font-family: 'Crimson Text', serif;
-            font-size: 1.1em;
-            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.1);
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px rgba(220, 53, 69, 0.1);
         }
 
+        /* Responsive design */
         @media (max-width: 768px) {
             .container {
-                padding: 10px;
+                padding: 20px 15px;
             }
             
-            header h1 {
-                font-size: 2em;
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
             }
             
             main {
-                padding: 20px;
+                padding: 30px 25px;
             }
             
             .analysis-section {
                 grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
                 gap: 20px;
+                padding: 25px;
             }
             
             .upload-area {
-                padding: 40px 20px;
+                padding: 50px 30px;
             }
         }
     </style>
@@ -625,19 +643,19 @@
     <div class="container">
         <header>
             <h1>Vitruvian Man Analyzer</h1>
-            <p>Analyze human poses using Leonardo da Vinci's perfect proportions</p>
-            <div class="subtitle">~  A Renaissance Journey Through Digital Mathematics  ~</div>
+            <div class="subtitle">Renaissance Art & Human Proportions</div>
+            <p class="description">Discover how your pose compares to Leonardo da Vinci's vision of perfect human harmony</p>
         </header>
 
         <main>
             <div class="upload-section">
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-content">
-                        <div class="upload-icon">📷</div>
-                        <p>Drop an image here or click to select</p>
+                        <div class="upload-icon">🎨</div>
+                        <p>Upload your image to begin the Renaissance analysis</p>
                         <input type="file" id="imageInput" accept="image/*" hidden>
                         <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
-                            Select Image
+                            Choose Your Portrait
                         </button>
                     </div>
                 </div>
@@ -645,7 +663,7 @@
 
             <div class="analysis-section" id="analysisSection" style="display: none;">
                 <div class="image-preview">
-                    <img id="previewImage" alt="Uploaded image">
+                    <img id="previewImage" alt="Your analyzed image">
                 </div>
                 
                 <div class="results">
@@ -655,55 +673,55 @@
                             <small>/100</small>
                         </div>
                         <h3 id="scoreLevel">Analyzing...</h3>
+                        <p class="score-description" id="scoreDescription"></p>
                     </div>
                     
                     <div class="metrics">
                         <div class="metric">
-                            <label>Head to Height Ratio</label>
-                            <div class="metric-bar">
-                                <div class="metric-fill" id="headRatio"></div>
-                                <span id="headRatioText">--</span>
-                            </div>
+                            <div class="metric-icon">👑</div>
+                            <label>Head Proportion</label>
+                            <div class="metric-value" id="headRatioValue">--</div>
+                            <div class="metric-status" id="headRatioStatus">--</div>
                         </div>
                         
                         <div class="metric">
-                            <label>Arm Span to Height</label>
-                            <div class="metric-bar">
-                                <div class="metric-fill" id="armSpan"></div>
-                                <span id="armSpanText">--</span>
-                            </div>
+                            <div class="metric-icon">🤲</div>
+                            <label>Arm Span</label>
+                            <div class="metric-value" id="armSpanValue">--</div>
+                            <div class="metric-status" id="armSpanStatus">--</div>
                         </div>
                         
                         <div class="metric">
-                            <label>Symmetry Score</label>
-                            <div class="metric-bar">
-                                <div class="metric-fill" id="symmetry"></div>
-                                <span id="symmetryText">--</span>
-                            </div>
+                            <div class="metric-icon">⚖️</div>
+                            <label>Body Symmetry</label>
+                            <div class="metric-value" id="symmetryValue">--</div>
+                            <div class="metric-status" id="symmetryStatus">--</div>
                         </div>
                         
                         <div class="metric">
-                            <label>Square Fit Ratio</label>
-                            <div class="metric-bar">
-                                <div class="metric-fill" id="squareFit"></div>
-                                <span id="squareFitText">--</span>
-                            </div>
+                            <div class="metric-icon">⬜</div>
+                            <label>Geometric Fit</label>
+                            <div class="metric-value" id="squareFitValue">--</div>
+                            <div class="metric-status" id="squareFitStatus">--</div>
                         </div>
                     </div>
                     
-                    <div class="analysis-text" id="analysisText">
-                        <!-- Analysis details will be populated here -->
+                    <div class="analysis-text">
+                        <div class="analysis-title">🎨 Your Renaissance Analysis</div>
+                        <div id="analysisText">
+                            <!-- Detailed analysis will be populated here -->
+                        </div>
                     </div>
                     
                     <button class="new-analysis-btn" onclick="resetAnalysis()">
-                        Analyze Another Image
+                        Analyze Another Portrait
                     </button>
                 </div>
             </div>
 
             <div class="loading" id="loading" style="display: none;">
                 <div class="spinner"></div>
-                <p>Analyzing pose and proportions...</p>
+                <p>The Renaissance master is examining your proportions...</p>
             </div>
 
             <div id="errorMessage" class="error-message" style="display: none;">
@@ -712,15 +730,13 @@
         </main>
 
         <footer>
-            <div class="info-section">
-                <h3>About the Vitruvian Man</h3>
-                <p>
-                    Leonardo da Vinci's Vitruvian Man represents the ideal human body proportions 
-                    based on the correlations of ideal human body proportions with geometry described 
-                    by the ancient Roman architect Vitruvius. This analyzer uses AI to measure how 
-                    closely a human pose matches these classical proportions.
-                </p>
-            </div>
+            <h3>About Leonardo's Vision</h3>
+            <p>
+                The Vitruvian Man represents the Renaissance belief that the human body embodies perfect mathematical proportions. 
+                Leonardo da Vinci's masterpiece shows how we fit within both a circle and square, demonstrating the divine geometry 
+                found in human form. This analyzer helps you discover how closely your own proportions match these timeless ideals 
+                of beauty and harmony.
+            </p>
         </footer>
     </div>
 
@@ -759,12 +775,10 @@
             const uploadArea = document.getElementById('uploadArea');
             const imageInput = document.getElementById('imageInput');
 
-            // Upload area click handler
             uploadArea.addEventListener('click', function() {
                 imageInput.click();
             });
 
-            // Drag and drop handlers
             uploadArea.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 uploadArea.classList.add('dragover');
@@ -785,7 +799,6 @@
                 }
             });
 
-            // File input change handler
             imageInput.addEventListener('change', function(e) {
                 if (e.target.files.length > 0) {
                     handleImageUpload(e.target.files[0]);
@@ -799,7 +812,6 @@
                 return;
             }
 
-            // Validate file type
             if (!file.type.startsWith('image/')) {
                 showError('Please select a valid image file.');
                 return;
@@ -808,7 +820,6 @@
             showLoading();
 
             try {
-                // Create image element
                 const img = new Image();
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
@@ -819,7 +830,6 @@
                     ctx.drawImage(img, 0, 0);
 
                     try {
-                        // Perform pose estimation
                         const poses = await net.estimateSinglePose(canvas, {
                             flipHorizontal: false
                         });
@@ -840,7 +850,6 @@
                     showError('Could not load the selected image. Please try a different file.');
                 };
 
-                // Preview image
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('previewImage').src = e.target.result;
@@ -855,23 +864,16 @@
         }
 
         function analyzeVitruvianPose(keypoints, imageWidth, imageHeight) {
-            // Extract key body points
             const bodyPoints = extractBodyPoints(keypoints);
-            
-            // Calculate proportions
             const proportions = calculateProportions(bodyPoints);
-            
-            // Analyze geometry
             const geometry = analyzeGeometry(bodyPoints);
-            
-            // Calculate Vitruvian score
             const vitruvianScore = calculateVitruvianScore(proportions, geometry);
             
             return {
                 vitruvian_score: vitruvianScore,
                 proportions: proportions,
                 geometry: geometry,
-                analysis: generateAnalysis(vitruvianScore, proportions, geometry)
+                analysis: generateSimpleAnalysis(vitruvianScore, proportions, geometry)
             };
         }
 
@@ -902,7 +904,6 @@
         }
 
         function calculateProportions(points) {
-            // Calculate head length (approximation from nose to shoulder center)
             const shoulderCenter = {
                 x: (points.leftShoulder?.x + points.rightShoulder?.x) / 2,
                 y: (points.leftShoulder?.y + points.rightShoulder?.y) / 2
@@ -910,26 +911,20 @@
 
             const headLength = distance(points.nose, shoulderCenter);
 
-            // Calculate total height (nose to ankle center)
             const ankleCenter = {
                 x: (points.leftAnkle?.x + points.rightAnkle?.x) / 2,
                 y: (points.leftAnkle?.y + points.rightAnkle?.y) / 2
             };
 
             const totalHeight = Math.abs(points.nose?.y - ankleCenter.y);
-
-            // Calculate arm span
             const armSpan = distance(points.leftWrist, points.rightWrist);
 
-            // Calculate torso length
             const hipCenter = {
                 x: (points.leftHip?.x + points.rightHip?.x) / 2,
                 y: (points.leftHip?.y + points.rightHip?.y) / 2
             };
 
             const torsoLength = distance(shoulderCenter, hipCenter);
-
-            // Calculate leg length
             const legLength = distance(hipCenter, ankleCenter);
 
             return {
@@ -948,21 +943,17 @@
         }
 
         function analyzeGeometry(points) {
-            // Calculate body center
             const allPoints = Object.values(points).filter(p => p && p.x && p.y);
             const centerX = allPoints.reduce((sum, p) => sum + p.x, 0) / allPoints.length;
             const centerY = allPoints.reduce((sum, p) => sum + p.y, 0) / allPoints.length;
 
-            // Calculate bounding box
             const xCoords = allPoints.map(p => p.x);
             const yCoords = allPoints.map(p => p.y);
             const width = Math.max(...xCoords) - Math.min(...xCoords);
             const height = Math.max(...yCoords) - Math.min(...yCoords);
 
-            // Square ratio
             const squareRatio = Math.min(width, height) / Math.max(width, height);
 
-            // Simple symmetry calculation
             const leftPoints = ['leftShoulder', 'leftElbow', 'leftWrist', 'leftHip', 'leftKnee', 'leftAnkle'];
             const rightPoints = ['rightShoulder', 'rightElbow', 'rightWrist', 'rightHip', 'rightKnee', 'rightAnkle'];
             
@@ -996,23 +987,19 @@
         }
 
         function calculateVitruvianScore(proportions, geometry) {
-            // Ideal Vitruvian proportions
             const idealHeadRatio = 1/8;
             const idealArmSpanRatio = 1.0;
             const idealTorsoRatio = 0.3;
             const idealLegRatio = 0.5;
 
-            // Score each proportion
             const headScore = Math.max(0, 100 - Math.abs(proportions.head_to_total_ratio - idealHeadRatio) * 800);
             const armSpanScore = Math.max(0, 100 - Math.abs(proportions.arm_span_to_height_ratio - idealArmSpanRatio) * 100);
             const torsoScore = Math.max(0, 100 - Math.abs(proportions.torso_to_total_ratio - idealTorsoRatio) * 300);
             const legScore = Math.max(0, 100 - Math.abs(proportions.leg_to_total_ratio - idealLegRatio) * 200);
 
-            // Geometric scores
             const squareScore = geometry.square_ratio * 100;
             const symmetryScore = geometry.symmetry_score * 100;
 
-            // Weighted average
             const totalScore = (
                 headScore * 0.15 +
                 armSpanScore * 0.25 +
@@ -1025,115 +1012,57 @@
             return Math.min(100, Math.max(0, totalScore));
         }
 
-        function generateAnalysis(score, proportions, geometry) {
-            let level, levelDescription, masterQuote;
-            
+        function generateSimpleAnalysis(score, proportions, geometry) {
+            let analysis = "";
+
             if (score >= 85) {
-                level = 'Magnifico';
-                levelDescription = 'Extraordinary Renaissance Perfection';
-                masterQuote = '"You have achieved what I dreamed - the divine proportion made flesh."';
+                analysis = "🎨 Extraordinary! Your proportions closely match Leonardo's vision of human perfection. You embody the Renaissance ideal of harmony and mathematical beauty.";
             } else if (score >= 70) {
-                level = 'Eccellente';
-                levelDescription = 'Impressive Classical Harmony';
-                masterQuote = '"Your form speaks the language of ancient geometry beautifully."';
+                analysis = "✨ Excellent! Your pose shows strong alignment with classical proportions. You have a natural sense of balance that Renaissance artists would admire.";
             } else if (score >= 55) {
-                level = 'Buono';
-                levelDescription = 'Pleasant Proportional Balance';
-                masterQuote = '"I see the seeds of divine mathematics within you."';
+                analysis = "👍 Good work! Your proportions show pleasant harmony. With some pose adjustments, you could achieve even closer alignment to the classical ideal.";
             } else if (score >= 40) {
-                level = 'Discreto';
-                levelDescription = 'Modest Geometric Alignment';
-                masterQuote = '"With practice, the golden ratios shall reveal themselves."';
+                analysis = "📏 Not bad! You show potential for achieving better proportional balance. Try centering yourself and extending your arms fully for improvement.";
             } else {
-                level = 'Novizio';
-                levelDescription = 'Beginning Your Proportional Journey';
-                masterQuote = '"Every master once stood where you stand now - embrace the learning."';
+                analysis = "🌱 This is your starting point! Everyone begins somewhere. Try standing tall with arms outstretched wide, perfectly centered, and let the geometry guide you.";
             }
 
-            let analysis = `✨ RENAISSANCE ANALYSIS ✨\n\n`;
-            analysis += `🏛️ Assessment: ${level} - ${levelDescription}\n`;
-            analysis += `📊 Divine Score: ${score.toFixed(1)} of 100 Sacred Points\n\n`;
-            analysis += `💭 Leonardo whispers: ${masterQuote}\n\n`;
-            analysis += `🔍 DETAILED PROPORTIONAL EXAMINATION:\n\n`;
-
-            // Head proportion analysis
+            // Add specific guidance
             const headRatio = proportions.head_to_total_ratio;
-            const headIdeal = 0.125;
-            const headDeviation = Math.abs(headRatio - headIdeal);
-            
-            analysis += `👑 The Crown Measurement (Head to Height):\n`;
-            analysis += `   Your ratio: ${headRatio.toFixed(3)} | Renaissance ideal: ${headIdeal.toFixed(3)}\n`;
-            if (headDeviation < 0.02) {
-                analysis += `   🎯 Perfetto! Your head proportions match da Vinci's golden standard almost exactly.\n`;
-            } else if (headDeviation < 0.04) {
-                analysis += `   ✨ Molto bene! Your head proportions are very close to the classical ideal.\n`;
-            } else if (headDeviation < 0.08) {
-                analysis += `   📏 Reasonably proportioned, though deviating slightly from Renaissance perfection.\n`;
-            } else {
-                analysis += `   📐 Your head proportions differ notably from classical standards - this affects overall harmony.\n`;
-            }
-            analysis += `\n`;
-
-            // Arm span analysis
             const armSpanRatio = proportions.arm_span_to_height_ratio;
-            const armSpanIdeal = 1.0;
-            const armSpanDeviation = Math.abs(armSpanRatio - armSpanIdeal);
-            
-            analysis += `🕊️ The Great Embrace (Arm Span to Height):\n`;
-            analysis += `   Your ratio: ${armSpanRatio.toFixed(3)} | Renaissance ideal: ${armSpanIdeal.toFixed(3)}\n`;
-            if (armSpanDeviation < 0.05) {
-                analysis += `   🎯 Magnifico! You embody the perfect square-circle harmony that fascinated Leonardo.\n`;
-            } else if (armSpanDeviation < 0.1) {
-                analysis += `   ✨ Excellent! Your arm span creates beautiful geometric balance.\n`;
-            } else if (armSpanDeviation < 0.2) {
-                analysis += `   📏 Good proportions, though not quite achieving perfect geometric unity.\n`;
-            } else {
-                analysis += `   📐 Your arm span suggests a different body architecture than the classical ideal.\n`;
-            }
-            analysis += `\n`;
+            const symmetry = geometry.symmetry_score;
+            const squareFit = geometry.square_ratio;
 
-            // Symmetry analysis
-            const symmetryScore = geometry.symmetry_score;
-            
-            analysis += `⚖️ Divine Symmetry (Bilateral Harmony):\n`;
-            analysis += `   Your balance: ${symmetryScore.toFixed(3)} | Perfect symmetry: 1.000\n`;
-            if (symmetryScore > 0.9) {
-                analysis += `   🎯 Straordinario! Your left and right sides mirror each other like a Renaissance masterpiece.\n`;
-            } else if (symmetryScore > 0.8) {
-                analysis += `   ✨ Beautiful bilateral balance - the mark of natural human grace.\n`;
-            } else if (symmetryScore > 0.6) {
-                analysis += `   📏 Decent symmetry with some natural human asymmetry showing through.\n`;
-            } else {
-                analysis += `   📐 Notable asymmetry - perhaps try centering your pose for better balance.\n`;
-            }
-            analysis += `\n`;
+            analysis += "\n\n📊 What the measurements mean:\n\n";
 
-            // Square fit analysis
-            const squareRatio = geometry.square_ratio;
-            
-            analysis += `⬜ Geometric Perfection (Square Harmony):\n`;
-            analysis += `   Your fit: ${squareRatio.toFixed(3)} | Perfect square: 1.000\n`;
-            if (squareRatio > 0.9) {
-                analysis += `   🎯 Incredibile! You fit within the sacred square like da Vinci's original drawing.\n`;
-            } else if (squareRatio > 0.8) {
-                analysis += `   ✨ Excellent geometric form - your pose speaks pure mathematical beauty.\n`;
-            } else if (squareRatio > 0.6) {
-                analysis += `   📏 Good overall shape, though not quite achieving perfect geometric containment.\n`;
+            // Head proportion explanation
+            if (Math.abs(headRatio - 0.125) < 0.03) {
+                analysis += "👑 Your head size is perfectly proportioned to your height - just like in classical art!\n\n";
             } else {
-                analysis += `   📐 Your pose extends beyond classical geometric boundaries - try a more centered stance.\n`;
+                analysis += "👑 Your head-to-height ratio differs from the classical ideal (1:8). This is completely normal - everyone's unique!\n\n";
             }
-            analysis += `\n`;
 
-            // Overall guidance
-            analysis += `🌟 RENAISSANCE GUIDANCE:\n`;
-            if (score >= 80) {
-                analysis += `You have achieved remarkable harmony with the ancient ideals of human perfection. Leonardo himself would marvel at your natural embodiment of divine proportion. You are living geometry!`;
-            } else if (score >= 60) {
-                analysis += `Your form carries the noble bearing of Renaissance ideals. With minor adjustments to your pose and alignment, you could achieve even greater harmony with the classical standards.`;
-            } else if (score >= 40) {
-                analysis += `You show promise in understanding the geometric principles of beauty. Focus on centering your pose, extending your arms fully, and maintaining perfect vertical alignment to improve your score.`;
+            // Arm span explanation
+            if (Math.abs(armSpanRatio - 1.0) < 0.1) {
+                analysis += "🤲 Wonderful! Your arm span nearly matches your height, creating beautiful geometric balance.\n\n";
+            } else if (armSpanRatio < 0.9) {
+                analysis += "🤲 Try extending your arms wider - Leonardo believed arm span should equal height for perfect harmony.\n\n";
             } else {
-                analysis += `Remember, even Michelangelo's David required countless hours of careful proportion planning. Try standing tall, arms outstretched, perfectly centered, and let the ancient mathematics guide your form.`;
+                analysis += "🤲 Your arms create a wide, generous span. Try bringing them in slightly for classical proportions.\n\n";
+            }
+
+            // Symmetry explanation
+            if (symmetry > 0.8) {
+                analysis += "⚖️ Excellent symmetry! Your left and right sides are well-balanced.\n\n";
+            } else {
+                analysis += "⚖️ Try centering your pose more evenly - symmetry was key to Renaissance beauty.\n\n";
+            }
+
+            // Square fit explanation
+            if (squareFit > 0.8) {
+                analysis += "⬜ Beautiful! You fit nicely within a square shape, just like da Vinci's drawing.";
+            } else {
+                analysis += "⬜ Your pose extends beyond a square shape. Try a more compact, centered stance.";
             }
 
             return analysis;
@@ -1144,13 +1073,6 @@
             return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
         }
 
-        function showLoading() {
-            document.querySelector('.upload-section').style.display = 'none';
-            document.getElementById('analysisSection').style.display = 'none';
-            document.getElementById('loading').style.display = 'block';
-            hideError();
-        }
-
         function displayResults(data) {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('analysisSection').style.display = 'block';
@@ -1159,49 +1081,67 @@
             const score = Math.round(data.vitruvian_score);
             document.getElementById('scoreValue').textContent = score;
 
-            // Update score level
-            let level = 'Poor';
-            if (score >= 80) level = 'Excellent';
-            else if (score >= 60) level = 'Good';
-            else if (score >= 40) level = 'Fair';
+            // Update score level and description
+            let level, description;
+            if (score >= 85) {
+                level = 'Renaissance Master';
+                description = 'Extraordinary proportional harmony';
+            } else if (score >= 70) {
+                level = 'Classical Beauty';
+                description = 'Excellent geometric balance';
+            } else if (score >= 55) {
+                level = 'Harmonious Form';
+                description = 'Good proportional alignment';
+            } else if (score >= 40) {
+                level = 'Developing Grace';
+                description = 'Promising proportional foundation';
+            } else {
+                level = 'Artistic Beginning';
+                description = 'Starting your proportional journey';
+            }
 
             document.getElementById('scoreLevel').textContent = level;
+            document.getElementById('scoreDescription').textContent = description;
 
-            // Update metrics with animations
-            setTimeout(() => {
-                updateMetric('headRatio', data.proportions.head_to_total_ratio, 0.125);
-                updateMetric('armSpan', data.proportions.arm_span_to_height_ratio, 1.0);
-                updateMetric('symmetry', data.geometry.symmetry_score, 1.0);
-                updateMetric('squareFit', data.geometry.square_ratio, 1.0);
-            }, 300);
+            // Update metrics
+            updateMetricDisplay('headRatio', data.proportions.head_to_total_ratio, 0.125, 'Head proportion');
+            updateMetricDisplay('armSpan', data.proportions.arm_span_to_height_ratio, 1.0, 'Arm span ratio');
+            updateMetricDisplay('symmetry', data.geometry.symmetry_score, 1.0, 'Symmetry score');
+            updateMetricDisplay('squareFit', data.geometry.square_ratio, 1.0, 'Square fit ratio');
 
             // Update analysis text
             document.getElementById('analysisText').textContent = data.analysis;
         }
 
-        function updateMetric(elementId, value, ideal) {
-            const fillElement = document.getElementById(elementId);
-            const textElement = document.getElementById(elementId + 'Text');
+        function updateMetricDisplay(metricId, value, ideal, label) {
+            const deviation = Math.abs(value - ideal) / ideal;
+            let status, statusClass;
 
-            // Calculate percentage for display
-            let percentage = Math.min(100, (value / Math.max(ideal, 1)) * 100);
-            if (ideal === 1.0) {
-                percentage = value * 100;
+            if (deviation < 0.1) {
+                status = 'Excellent';
+                statusClass = 'excellent';
+            } else if (deviation < 0.2) {
+                status = 'Good';
+                statusClass = 'good';
+            } else if (deviation < 0.4) {
+                status = 'Fair';
+                statusClass = 'fair';
+            } else {
+                status = 'Needs Work';
+                statusClass = 'needs-work';
             }
 
-            // Animate the fill
-            fillElement.style.width = percentage + '%';
+            document.getElementById(metricId + 'Value').textContent = value.toFixed(3);
+            const statusElement = document.getElementById(metricId + 'Status');
+            statusElement.textContent = status;
+            statusElement.className = 'metric-status ' + statusClass;
+        }
 
-            // Update text
-            textElement.textContent = value.toFixed(3);
-
-            // Color coding based on how close to ideal
-            const deviation = Math.abs(value - ideal);
-            let color = '#28a745'; // Green for good
-            if (deviation > ideal * 0.2) color = '#ffc107'; // Yellow for okay
-            if (deviation > ideal * 0.4) color = '#dc3545'; // Red for poor
-
-            fillElement.style.background = color;
+        function showLoading() {
+            document.querySelector('.upload-section').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            hideError();
         }
 
         function resetAnalysis() {
@@ -1210,18 +1150,6 @@
             document.getElementById('analysisSection').style.display = 'none';
             document.getElementById('loading').style.display = 'none';
             hideError();
-
-            // Reset metrics
-            const metrics = ['headRatio', 'armSpan', 'symmetry', 'squareFit'];
-            metrics.forEach(metric => {
-                document.getElementById(metric).style.width = '0%';
-                document.getElementById(metric + 'Text').textContent = '--';
-            });
-
-            // Reset score
-            document.getElementById('scoreValue').textContent = '--';
-            document.getElementById('scoreLevel').textContent = 'Analyzing...';
-            document.getElementById('analysisText').textContent = '';
         }
 
         function showError(message) {
@@ -1229,7 +1157,6 @@
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
             
-            // Hide loading and analysis sections
             document.getElementById('loading').style.display = 'none';
             document.getElementById('analysisSection').style.display = 'none';
         }
