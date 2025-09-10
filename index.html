@@ -472,9 +472,9 @@
         }
 
         .needs-work {
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
-            border: 1px solid rgba(220, 53, 69, 0.3);
+            background: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+            border: 1px solid rgba(108, 117, 125, 0.3);
         }
 
         /* Analysis text */
@@ -732,12 +732,13 @@
         </main>
 
         <footer>
-            <h3>About Leonardo's Vision</h3>
+            <h3>How It Works & Best Photos</h3>
             <p>
-                The Vitruvian Man represents the Renaissance belief that the human body embodies perfect mathematical proportions. 
-                Leonardo da Vinci's masterpiece shows how we fit within both a circle and square, demonstrating the divine geometry 
-                found in human form. This analyzer helps you discover how closely your own proportions match these timeless ideals 
-                of beauty and harmony.
+                <strong>📸 For Best Results:</strong> Use a full-body photo where you're standing straight with arms spread wide (like making a "T" shape). Make sure your whole body is visible from head to feet, and you're facing the camera directly.
+            </p>
+            <br>
+            <p>
+                <strong>🤖 The Technology:</strong> This uses Google's AI called "PoseNet" that can spot 17 key points on your body (like shoulders, elbows, hips, etc.). It then does math to measure distances between these points and compares them to Leonardo da Vinci's ideal proportions from 500+ years ago. All the AI processing happens right in your browser - no servers needed!
             </p>
         </footer>
     </div>
@@ -1026,7 +1027,7 @@
             } else if (score >= 40) {
                 analysis = "📏 Fair geometric alignment.";
             } else {
-                analysis = "🌱 Beginning proportional journey.";
+                analysis = "🌱 Unique proportional character.";
             }
 
             return analysis;
@@ -1091,7 +1092,7 @@
                 status = 'Fair';
                 statusClass = 'fair';
             } else {
-                status = 'Needs Work';
+                status = 'Unique';
                 statusClass = 'needs-work';
             }
 
