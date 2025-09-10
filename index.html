@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vitruvian Man Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:wght@400;600&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,235 +13,521 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1.7;
+            color: #2c1810;
+            background: linear-gradient(135deg, 
+                #f4f1ec 0%, 
+                #ede4d3 25%, 
+                #e8dcc0 50%, 
+                #d4c4a8 75%, 
+                #c9b896 100%
+            );
             min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="paper" patternUnits="userSpaceOnUse" width="100" height="100"><rect fill="%23f8f5f0" width="100" height="100"/><g opacity="0.1"><circle cx="20" cy="20" r="1" fill="%23d4af37"/><circle cx="80" cy="40" r="0.5" fill="%238b4513"/><circle cx="30" cy="70" r="0.8" fill="%23cd853f"/><circle cx="70" cy="80" r="1.2" fill="%23daa520"/><circle cx="50" cy="30" r="0.3" fill="%23b8860b"/><circle cx="10" cy="90" r="0.7" fill="%23d2691e"/></g></pattern></defs><rect width="100" height="100" fill="url(%23paper)"/></svg>') repeat;
+            opacity: 0.3;
+            z-index: -1;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px;
+            position: relative;
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
-            color: white;
+            margin-bottom: 60px;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #b8860b 50%, #d4af37 80%, transparent 100%);
+            border-radius: 2px;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #b8860b 50%, #d4af37 80%, transparent 100%);
+            border-radius: 2px;
         }
 
         header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: 'Cinzel', serif;
+            font-size: 3.5em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #8b4513;
+            text-shadow: 2px 2px 4px rgba(139, 69, 19, 0.1);
+            letter-spacing: 2px;
         }
 
         header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1.4em;
+            color: #6b4423;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.1em;
+            color: #8b6f47;
+            margin-top: 10px;
+            font-style: italic;
         }
 
         main {
-            background: white;
+            background: linear-gradient(145deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(248, 245, 240, 0.9) 50%, 
+                rgba(255, 255, 255, 0.95) 100%
+            );
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 
+                0 25px 50px rgba(139, 69, 19, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                0 0 0 1px rgba(212, 175, 55, 0.1);
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+
+        main::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
             border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
+            pointer-events: none;
         }
 
         .upload-section {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         .upload-area {
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            padding: 60px 40px;
+            border: 3px dashed #d4af37;
+            border-radius: 20px;
+            padding: 70px 50px;
             text-align: center;
-            background: #f8f9ff;
-            transition: all 0.3s ease;
+            background: linear-gradient(145deg, 
+                rgba(248, 245, 240, 0.8) 0%, 
+                rgba(255, 252, 247, 0.9) 50%, 
+                rgba(248, 245, 240, 0.8) 100%
+            );
+            transition: all 0.4s ease;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #d4af37 0%, 
+                #b8860b 25%, 
+                #cd853f 50%, 
+                #daa520 75%, 
+                #d4af37 100%
+            );
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .upload-area:hover::before {
+            opacity: 0.3;
         }
 
         .upload-area:hover {
-            border-color: #764ba2;
-            background: #f0f2ff;
-            transform: translateY(-2px);
+            border-color: #b8860b;
+            background: linear-gradient(145deg, 
+                rgba(255, 252, 247, 0.95) 0%, 
+                rgba(248, 245, 240, 0.9) 50%, 
+                rgba(255, 252, 247, 0.95) 100%
+            );
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(139, 69, 19, 0.15);
         }
 
         .upload-area.dragover {
-            border-color: #764ba2;
-            background: #e8ebff;
-            transform: scale(1.02);
+            border-color: #8b4513;
+            background: linear-gradient(145deg, 
+                rgba(212, 175, 55, 0.1) 0%, 
+                rgba(255, 252, 247, 0.95) 50%, 
+                rgba(212, 175, 55, 0.1) 100%
+            );
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
         }
 
         .upload-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
+            font-size: 5em;
+            margin-bottom: 25px;
+            color: #d4af37;
+            text-shadow: 2px 2px 4px rgba(212, 175, 55, 0.2);
         }
 
         .upload-content p {
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            color: #666;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            color: #6b4423;
+            font-weight: 600;
         }
 
         .upload-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #8b4513 100%);
+            color: #fff;
             border: none;
-            padding: 15px 30px;
+            padding: 18px 40px;
+            font-family: 'Cinzel', serif;
             font-size: 1.1em;
-            border-radius: 25px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            transition: left 0.5s ease;
+        }
+
+        .upload-btn:hover::before {
+            left: 100%;
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.3);
+            background: linear-gradient(135deg, #daa520 0%, #cd853f 50%, #a0522d 100%);
         }
 
         .analysis-section {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 50px;
             align-items: start;
+        }
+
+        .image-preview {
+            position: relative;
         }
 
         .image-preview img {
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 
+                0 20px 40px rgba(139, 69, 19, 0.2),
+                0 0 0 3px rgba(212, 175, 55, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .image-preview::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #d4af37, #b8860b, #cd853f, #daa520);
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0.1;
         }
 
         .results {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 35px;
         }
 
         .score-display {
             text-align: center;
+            padding: 30px;
+            background: linear-gradient(145deg, 
+                rgba(212, 175, 55, 0.05) 0%, 
+                rgba(255, 255, 255, 0.8) 50%, 
+                rgba(212, 175, 55, 0.05) 100%
+            );
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         .score-circle {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 30%, #8b4513 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            color: white;
+            margin: 0 auto 25px;
+            color: #fff;
             font-weight: bold;
+            box-shadow: 
+                0 15px 30px rgba(139, 69, 19, 0.3),
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
         }
 
         .score-circle span {
-            font-size: 2em;
+            font-family: 'Cinzel', serif;
+            font-size: 2.2em;
             line-height: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .score-circle small {
-            font-size: 0.8em;
-            opacity: 0.8;
+            font-size: 0.9em;
+            opacity: 0.9;
+            font-family: 'Cormorant Garamond', serif;
         }
 
         #scoreLevel {
-            font-size: 1.5em;
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
             margin: 0;
+            color: #8b4513;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .metrics {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
+            padding: 30px;
+            background: linear-gradient(145deg, 
+                rgba(248, 245, 240, 0.6) 0%, 
+                rgba(255, 255, 255, 0.8) 50%, 
+                rgba(248, 245, 240, 0.6) 100%
+            );
+            border-radius: 18px;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.08);
         }
 
         .metric {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .metric label {
+            font-family: 'Cinzel', serif;
             font-weight: 600;
-            color: #555;
+            color: #8b4513;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .metric-bar {
-            background: #e0e0e0;
-            border-radius: 10px;
-            height: 20px;
+            background: linear-gradient(135deg, 
+                rgba(212, 175, 55, 0.1) 0%, 
+                rgba(139, 69, 19, 0.05) 100%
+            );
+            border-radius: 12px;
+            height: 24px;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: inset 0 2px 4px rgba(139, 69, 19, 0.1);
         }
 
         .metric-fill {
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            transition: width 0.8s ease;
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #8b4513 100%);
+            border-radius: 12px;
+            transition: width 1s ease;
             width: 0%;
+            position: relative;
+            box-shadow: 
+                inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                0 1px 3px rgba(139, 69, 19, 0.2);
+        }
+
+        .metric-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.2) 0%, 
+                transparent 100%
+            );
+            border-radius: 12px 12px 0 0;
         }
 
         .metric-bar span {
             position: absolute;
-            right: 10px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 0.9em;
+            font-size: 0.95em;
             font-weight: 600;
-            color: #333;
+            color: #6b4423;
+            font-family: 'Cormorant Garamond', serif;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .analysis-text {
-            background: #f8f9ff;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
+            background: linear-gradient(145deg, 
+                rgba(248, 245, 240, 0.9) 0%, 
+                rgba(255, 252, 247, 0.95) 50%, 
+                rgba(248, 245, 240, 0.9) 100%
+            );
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #d4af37;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-right: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
             white-space: pre-line;
-            font-family: 'Courier New', monospace;
-            font-size: 0.95em;
-            line-height: 1.5;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.05em;
+            line-height: 1.7;
+            color: #4a3626;
+            box-shadow: 
+                0 10px 25px rgba(139, 69, 19, 0.1),
+                inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .detailed-analysis {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(212, 175, 55, 0.3);
+            font-style: italic;
+            color: #6b4423;
         }
 
         .new-analysis-btn {
-            background: #28a745;
-            color: white;
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #654321 100%);
+            color: #fff;
             border: none;
-            padding: 15px 30px;
+            padding: 18px 40px;
+            font-family: 'Cinzel', serif;
             font-size: 1.1em;
-            border-radius: 25px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             align-self: center;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .new-analysis-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+            transition: left 0.5s ease;
+        }
+
+        .new-analysis-btn:hover::before {
+            left: 100%;
         }
 
         .new-analysis-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+            background: linear-gradient(135deg, #a0522d 0%, #8b4513 50%, #654321 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.4);
         }
 
         .loading {
             text-align: center;
-            padding: 60px 40px;
+            padding: 80px 50px;
         }
 
         .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid #e0e0e0;
-            border-top: 4px solid #667eea;
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(212, 175, 55, 0.2);
+            border-top: 4px solid #d4af37;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            animation: spin 1.5s linear infinite;
+            margin: 0 auto 30px;
+        }
+
+        .loading p {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.3em;
+            color: #8b4513;
+            font-style: italic;
         }
 
         @keyframes spin {
@@ -249,33 +536,65 @@
         }
 
         .info-section {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            color: white;
+            background: linear-gradient(145deg, 
+                rgba(139, 69, 19, 0.8) 0%, 
+                rgba(160, 82, 45, 0.9) 50%, 
+                rgba(139, 69, 19, 0.8) 100%
+            );
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 50px;
+            color: #fff;
             text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 40px rgba(139, 69, 19, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);
         }
 
         .info-section h3 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: #f4f1ec;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .info-section p {
-            opacity: 0.9;
-            line-height: 1.7;
-            max-width: 800px;
+            font-family: 'Cormorant Garamond', serif;
+            opacity: 0.95;
+            line-height: 1.8;
+            max-width: 900px;
             margin: 0 auto;
+            font-size: 1.15em;
         }
 
         .error-message {
-            background: #f8d7da;
+            background: linear-gradient(135deg, 
+                rgba(220, 53, 69, 0.1) 0%, 
+                rgba(248, 215, 218, 0.9) 50%, 
+                rgba(220, 53, 69, 0.1) 100%
+            );
             color: #721c24;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin: 25px 0;
             border: 1px solid #f5c6cb;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.1);
         }
 
         @media (max-width: 768px) {
@@ -307,6 +626,7 @@
         <header>
             <h1>Vitruvian Man Analyzer</h1>
             <p>Analyze human poses using Leonardo da Vinci's perfect proportions</p>
+            <div class="subtitle">~  A Renaissance Journey Through Digital Mathematics  ~</div>
         </header>
 
         <main>
@@ -706,17 +1026,115 @@
         }
 
         function generateAnalysis(score, proportions, geometry) {
-            let level = 'Poor';
-            if (score >= 80) level = 'Excellent';
-            else if (score >= 60) level = 'Good';
-            else if (score >= 40) level = 'Fair';
+            let level, levelDescription, masterQuote;
+            
+            if (score >= 85) {
+                level = 'Magnifico';
+                levelDescription = 'Extraordinary Renaissance Perfection';
+                masterQuote = '"You have achieved what I dreamed - the divine proportion made flesh."';
+            } else if (score >= 70) {
+                level = 'Eccellente';
+                levelDescription = 'Impressive Classical Harmony';
+                masterQuote = '"Your form speaks the language of ancient geometry beautifully."';
+            } else if (score >= 55) {
+                level = 'Buono';
+                levelDescription = 'Pleasant Proportional Balance';
+                masterQuote = '"I see the seeds of divine mathematics within you."';
+            } else if (score >= 40) {
+                level = 'Discreto';
+                levelDescription = 'Modest Geometric Alignment';
+                masterQuote = '"With practice, the golden ratios shall reveal themselves."';
+            } else {
+                level = 'Novizio';
+                levelDescription = 'Beginning Your Proportional Journey';
+                masterQuote = '"Every master once stood where you stand now - embrace the learning."';
+            }
 
-            let analysis = `Vitruvian Man Analysis: ${level} (${score.toFixed(1)}/100)\n\n`;
-            analysis += `Proportions:\n`;
-            analysis += `- Head to height ratio: ${proportions.head_to_total_ratio.toFixed(3)} (ideal: 0.125)\n`;
-            analysis += `- Arm span to height: ${proportions.arm_span_to_height_ratio.toFixed(3)} (ideal: 1.000)\n`;
-            analysis += `- Symmetry score: ${geometry.symmetry_score.toFixed(3)}\n`;
-            analysis += `- Square fit ratio: ${geometry.square_ratio.toFixed(3)}\n`;
+            let analysis = `✨ RENAISSANCE ANALYSIS ✨\n\n`;
+            analysis += `🏛️ Assessment: ${level} - ${levelDescription}\n`;
+            analysis += `📊 Divine Score: ${score.toFixed(1)} of 100 Sacred Points\n\n`;
+            analysis += `💭 Leonardo whispers: ${masterQuote}\n\n`;
+            analysis += `🔍 DETAILED PROPORTIONAL EXAMINATION:\n\n`;
+
+            // Head proportion analysis
+            const headRatio = proportions.head_to_total_ratio;
+            const headIdeal = 0.125;
+            const headDeviation = Math.abs(headRatio - headIdeal);
+            
+            analysis += `👑 The Crown Measurement (Head to Height):\n`;
+            analysis += `   Your ratio: ${headRatio.toFixed(3)} | Renaissance ideal: ${headIdeal.toFixed(3)}\n`;
+            if (headDeviation < 0.02) {
+                analysis += `   🎯 Perfetto! Your head proportions match da Vinci's golden standard almost exactly.\n`;
+            } else if (headDeviation < 0.04) {
+                analysis += `   ✨ Molto bene! Your head proportions are very close to the classical ideal.\n`;
+            } else if (headDeviation < 0.08) {
+                analysis += `   📏 Reasonably proportioned, though deviating slightly from Renaissance perfection.\n`;
+            } else {
+                analysis += `   📐 Your head proportions differ notably from classical standards - this affects overall harmony.\n`;
+            }
+            analysis += `\n`;
+
+            // Arm span analysis
+            const armSpanRatio = proportions.arm_span_to_height_ratio;
+            const armSpanIdeal = 1.0;
+            const armSpanDeviation = Math.abs(armSpanRatio - armSpanIdeal);
+            
+            analysis += `🕊️ The Great Embrace (Arm Span to Height):\n`;
+            analysis += `   Your ratio: ${armSpanRatio.toFixed(3)} | Renaissance ideal: ${armSpanIdeal.toFixed(3)}\n`;
+            if (armSpanDeviation < 0.05) {
+                analysis += `   🎯 Magnifico! You embody the perfect square-circle harmony that fascinated Leonardo.\n`;
+            } else if (armSpanDeviation < 0.1) {
+                analysis += `   ✨ Excellent! Your arm span creates beautiful geometric balance.\n`;
+            } else if (armSpanDeviation < 0.2) {
+                analysis += `   📏 Good proportions, though not quite achieving perfect geometric unity.\n`;
+            } else {
+                analysis += `   📐 Your arm span suggests a different body architecture than the classical ideal.\n`;
+            }
+            analysis += `\n`;
+
+            // Symmetry analysis
+            const symmetryScore = geometry.symmetry_score;
+            
+            analysis += `⚖️ Divine Symmetry (Bilateral Harmony):\n`;
+            analysis += `   Your balance: ${symmetryScore.toFixed(3)} | Perfect symmetry: 1.000\n`;
+            if (symmetryScore > 0.9) {
+                analysis += `   🎯 Straordinario! Your left and right sides mirror each other like a Renaissance masterpiece.\n`;
+            } else if (symmetryScore > 0.8) {
+                analysis += `   ✨ Beautiful bilateral balance - the mark of natural human grace.\n`;
+            } else if (symmetryScore > 0.6) {
+                analysis += `   📏 Decent symmetry with some natural human asymmetry showing through.\n`;
+            } else {
+                analysis += `   📐 Notable asymmetry - perhaps try centering your pose for better balance.\n`;
+            }
+            analysis += `\n`;
+
+            // Square fit analysis
+            const squareRatio = geometry.square_ratio;
+            
+            analysis += `⬜ Geometric Perfection (Square Harmony):\n`;
+            analysis += `   Your fit: ${squareRatio.toFixed(3)} | Perfect square: 1.000\n`;
+            if (squareRatio > 0.9) {
+                analysis += `   🎯 Incredibile! You fit within the sacred square like da Vinci's original drawing.\n`;
+            } else if (squareRatio > 0.8) {
+                analysis += `   ✨ Excellent geometric form - your pose speaks pure mathematical beauty.\n`;
+            } else if (squareRatio > 0.6) {
+                analysis += `   📏 Good overall shape, though not quite achieving perfect geometric containment.\n`;
+            } else {
+                analysis += `   📐 Your pose extends beyond classical geometric boundaries - try a more centered stance.\n`;
+            }
+            analysis += `\n`;
+
+            // Overall guidance
+            analysis += `🌟 RENAISSANCE GUIDANCE:\n`;
+            if (score >= 80) {
+                analysis += `You have achieved remarkable harmony with the ancient ideals of human perfection. Leonardo himself would marvel at your natural embodiment of divine proportion. You are living geometry!`;
+            } else if (score >= 60) {
+                analysis += `Your form carries the noble bearing of Renaissance ideals. With minor adjustments to your pose and alignment, you could achieve even greater harmony with the classical standards.`;
+            } else if (score >= 40) {
+                analysis += `You show promise in understanding the geometric principles of beauty. Focus on centering your pose, extending your arms fully, and maintaining perfect vertical alignment to improve your score.`;
+            } else {
+                analysis += `Remember, even Michelangelo's David required countless hours of careful proportion planning. Try standing tall, arms outstretched, perfectly centered, and let the ancient mathematics guide your form.`;
+            }
 
             return analysis;
         }
