@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitruvian Man Analyzer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        main {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .upload-section {
+            margin-bottom: 40px;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            background: #f8f9ff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: #e8ebff;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .upload-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .analysis-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .results {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .score-display {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .score-circle span {
+            font-size: 2em;
+            line-height: 1;
+        }
+
+        .score-circle small {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        #scoreLevel {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .metric label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .metric-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.8s ease;
+            width: 0%;
+        }
+
+        .metric-bar span {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .analysis-text {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            white-space: pre-line;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .new-analysis-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: center;
+        }
+
+        .new-analysis-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .info-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .info-section p {
+            opacity: 0.9;
+            line-height: 1.7;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            main {
+                padding: 20px;
+            }
+            
+            .analysis-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .upload-area {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Vitruvian Man Analyzer</h1>
+            <p>Analyze human poses using Leonardo da Vinci's perfect proportions</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <div class="upload-icon">📷</div>
+                        <p>Drop an image here or click to select</p>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+                            Select Image
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analysis-section" id="analysisSection" style="display: none;">
+                <div class="image-preview">
+                    <img id="previewImage" alt="Uploaded image">
+                </div>
+                
+                <div class="results">
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span id="scoreValue">--</span>
+                            <small>/100</small>
+                        </div>
+                        <h3 id="scoreLevel">Analyzing...</h3>
+                    </div>
+                    
+                    <div class="metrics">
+                        <div class="metric">
+                            <label>Head to Height Ratio</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="headRatio"></div>
+                                <span id="headRatioText">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <label>Arm Span to Height</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="armSpan"></div>
+                                <span id="armSpanText">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <label>Symmetry Score</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="symmetry"></div>
+                                <span id="symmetryText">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="metric">
+                            <label>Square Fit Ratio</label>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="squareFit"></div>
+                                <span id="squareFitText">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-text" id="analysisText">
+                        <!-- Analysis details will be populated here -->
+                    </div>
+                    
+                    <button class="new-analysis-btn" onclick="resetAnalysis()">
+                        Analyze Another Image
+                    </button>
+                </div>
+            </div>
+
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Analyzing pose and proportions...</p>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <!-- Error messages will appear here -->
+            </div>
+        </main>
+
+        <footer>
+            <div class="info-section">
+                <h3>About the Vitruvian Man</h3>
+                <p>
+                    Leonardo da Vinci's Vitruvian Man represents the ideal human body proportions 
+                    based on the correlations of ideal human body proportions with geometry described 
+                    by the ancient Roman architect Vitruvius. This analyzer uses AI to measure how 
+                    closely a human pose matches these classical proportions.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- TensorFlow.js and PoseNet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet@2.2.2"></script>
+
+    <script>
+        let net;
+        let isModelLoaded = false;
+
+        // Load PoseNet model
+        async function loadModel() {
+            try {
+                net = await posenet.load({
+                    architecture: 'MobileNetV1',
+                    outputStride: 16,
+                    inputResolution: { width: 640, height: 480 },
+                    multiplier: 0.75
+                });
+                isModelLoaded = true;
+                console.log('PoseNet model loaded successfully');
+            } catch (error) {
+                console.error('Error loading PoseNet model:', error);
+                showError('Failed to load AI model. Please refresh the page and try again.');
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadModel();
+            setupEventHandlers();
+        });
+
+        function setupEventHandlers() {
+            const uploadArea = document.getElementById('uploadArea');
+            const imageInput = document.getElementById('imageInput');
+
+            // Upload area click handler
+            uploadArea.addEventListener('click', function() {
+                imageInput.click();
+            });
+
+            // Drag and drop handlers
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleImageUpload(files[0]);
+                }
+            });
+
+            // File input change handler
+            imageInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    handleImageUpload(e.target.files[0]);
+                }
+            });
+        }
+
+        async function handleImageUpload(file) {
+            if (!isModelLoaded) {
+                showError('AI model is still loading. Please wait a moment and try again.');
+                return;
+            }
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showError('Please select a valid image file.');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Create image element
+                const img = new Image();
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                img.onload = async function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    try {
+                        // Perform pose estimation
+                        const poses = await net.estimateSinglePose(canvas, {
+                            flipHorizontal: false
+                        });
+
+                        if (poses && poses.keypoints) {
+                            const analysis = analyzeVitruvianPose(poses.keypoints, img.width, img.height);
+                            displayResults(analysis);
+                        } else {
+                            throw new Error('No pose detected in the image');
+                        }
+                    } catch (error) {
+                        console.error('Pose estimation error:', error);
+                        showError('Could not detect a human pose in this image. Please try with a clearer full-body image.');
+                    }
+                };
+
+                img.onerror = function() {
+                    showError('Could not load the selected image. Please try a different file.');
+                };
+
+                // Preview image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImage').src = e.target.result;
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+            } catch (error) {
+                console.error('Error processing image:', error);
+                showError('Error processing the image. Please try again.');
+            }
+        }
+
+        function analyzeVitruvianPose(keypoints, imageWidth, imageHeight) {
+            // Extract key body points
+            const bodyPoints = extractBodyPoints(keypoints);
+            
+            // Calculate proportions
+            const proportions = calculateProportions(bodyPoints);
+            
+            // Analyze geometry
+            const geometry = analyzeGeometry(bodyPoints);
+            
+            // Calculate Vitruvian score
+            const vitruvianScore = calculateVitruvianScore(proportions, geometry);
+            
+            return {
+                vitruvian_score: vitruvianScore,
+                proportions: proportions,
+                geometry: geometry,
+                analysis: generateAnalysis(vitruvianScore, proportions, geometry)
+            };
+        }
+
+        function extractBodyPoints(keypoints) {
+            const points = {};
+            const keyMapping = {
+                'nose': 0, 'leftEye': 1, 'rightEye': 2,
+                'leftEar': 3, 'rightEar': 4,
+                'leftShoulder': 5, 'rightShoulder': 6,
+                'leftElbow': 7, 'rightElbow': 8,
+                'leftWrist': 9, 'rightWrist': 10,
+                'leftHip': 11, 'rightHip': 12,
+                'leftKnee': 13, 'rightKnee': 14,
+                'leftAnkle': 15, 'rightAnkle': 16
+            };
+
+            for (const [name, index] of Object.entries(keyMapping)) {
+                if (keypoints[index] && keypoints[index].score > 0.3) {
+                    points[name] = {
+                        x: keypoints[index].position.x,
+                        y: keypoints[index].position.y,
+                        confidence: keypoints[index].score
+                    };
+                }
+            }
+
+            return points;
+        }
+
+        function calculateProportions(points) {
+            // Calculate head length (approximation from nose to shoulder center)
+            const shoulderCenter = {
+                x: (points.leftShoulder?.x + points.rightShoulder?.x) / 2,
+                y: (points.leftShoulder?.y + points.rightShoulder?.y) / 2
+            };
+
+            const headLength = distance(points.nose, shoulderCenter);
+
+            // Calculate total height (nose to ankle center)
+            const ankleCenter = {
+                x: (points.leftAnkle?.x + points.rightAnkle?.x) / 2,
+                y: (points.leftAnkle?.y + points.rightAnkle?.y) / 2
+            };
+
+            const totalHeight = Math.abs(points.nose?.y - ankleCenter.y);
+
+            // Calculate arm span
+            const armSpan = distance(points.leftWrist, points.rightWrist);
+
+            // Calculate torso length
+            const hipCenter = {
+                x: (points.leftHip?.x + points.rightHip?.x) / 2,
+                y: (points.leftHip?.y + points.rightHip?.y) / 2
+            };
+
+            const torsoLength = distance(shoulderCenter, hipCenter);
+
+            // Calculate leg length
+            const legLength = distance(hipCenter, ankleCenter);
+
+            return {
+                head_to_total_ratio: totalHeight > 0 ? headLength / totalHeight : 0,
+                arm_span_to_height_ratio: totalHeight > 0 ? armSpan / totalHeight : 0,
+                torso_to_total_ratio: totalHeight > 0 ? torsoLength / totalHeight : 0,
+                leg_to_total_ratio: totalHeight > 0 ? legLength / totalHeight : 0,
+                measurements: {
+                    head_length: headLength,
+                    total_height: totalHeight,
+                    arm_span: armSpan,
+                    torso_length: torsoLength,
+                    leg_length: legLength
+                }
+            };
+        }
+
+        function analyzeGeometry(points) {
+            // Calculate body center
+            const allPoints = Object.values(points).filter(p => p && p.x && p.y);
+            const centerX = allPoints.reduce((sum, p) => sum + p.x, 0) / allPoints.length;
+            const centerY = allPoints.reduce((sum, p) => sum + p.y, 0) / allPoints.length;
+
+            // Calculate bounding box
+            const xCoords = allPoints.map(p => p.x);
+            const yCoords = allPoints.map(p => p.y);
+            const width = Math.max(...xCoords) - Math.min(...xCoords);
+            const height = Math.max(...yCoords) - Math.min(...yCoords);
+
+            // Square ratio
+            const squareRatio = Math.min(width, height) / Math.max(width, height);
+
+            // Simple symmetry calculation
+            const leftPoints = ['leftShoulder', 'leftElbow', 'leftWrist', 'leftHip', 'leftKnee', 'leftAnkle'];
+            const rightPoints = ['rightShoulder', 'rightElbow', 'rightWrist', 'rightHip', 'rightKnee', 'rightAnkle'];
+            
+            let symmetrySum = 0;
+            let validPairs = 0;
+
+            for (let i = 0; i < leftPoints.length; i++) {
+                const leftPoint = points[leftPoints[i]];
+                const rightPoint = points[rightPoints[i]];
+                
+                if (leftPoint && rightPoint) {
+                    const leftDist = Math.abs(leftPoint.x - centerX);
+                    const rightDist = Math.abs(rightPoint.x - centerX);
+                    const totalDist = leftDist + rightDist;
+                    
+                    if (totalDist > 0) {
+                        symmetrySum += 1 - Math.abs(leftDist - rightDist) / totalDist;
+                        validPairs++;
+                    }
+                }
+            }
+
+            const symmetryScore = validPairs > 0 ? symmetrySum / validPairs : 0;
+
+            return {
+                square_ratio: squareRatio,
+                symmetry_score: Math.max(0, symmetryScore),
+                bounding_box: { width: width, height: height },
+                center_point: { x: centerX, y: centerY }
+            };
+        }
+
+        function calculateVitruvianScore(proportions, geometry) {
+            // Ideal Vitruvian proportions
+            const idealHeadRatio = 1/8;
+            const idealArmSpanRatio = 1.0;
+            const idealTorsoRatio = 0.3;
+            const idealLegRatio = 0.5;
+
+            // Score each proportion
+            const headScore = Math.max(0, 100 - Math.abs(proportions.head_to_total_ratio - idealHeadRatio) * 800);
+            const armSpanScore = Math.max(0, 100 - Math.abs(proportions.arm_span_to_height_ratio - idealArmSpanRatio) * 100);
+            const torsoScore = Math.max(0, 100 - Math.abs(proportions.torso_to_total_ratio - idealTorsoRatio) * 300);
+            const legScore = Math.max(0, 100 - Math.abs(proportions.leg_to_total_ratio - idealLegRatio) * 200);
+
+            // Geometric scores
+            const squareScore = geometry.square_ratio * 100;
+            const symmetryScore = geometry.symmetry_score * 100;
+
+            // Weighted average
+            const totalScore = (
+                headScore * 0.15 +
+                armSpanScore * 0.25 +
+                torsoScore * 0.15 +
+                legScore * 0.15 +
+                squareScore * 0.15 +
+                symmetryScore * 0.15
+            );
+
+            return Math.min(100, Math.max(0, totalScore));
+        }
+
+        function generateAnalysis(score, proportions, geometry) {
+            let level = 'Poor';
+            if (score >= 80) level = 'Excellent';
+            else if (score >= 60) level = 'Good';
+            else if (score >= 40) level = 'Fair';
+
+            let analysis = `Vitruvian Man Analysis: ${level} (${score.toFixed(1)}/100)\n\n`;
+            analysis += `Proportions:\n`;
+            analysis += `- Head to height ratio: ${proportions.head_to_total_ratio.toFixed(3)} (ideal: 0.125)\n`;
+            analysis += `- Arm span to height: ${proportions.arm_span_to_height_ratio.toFixed(3)} (ideal: 1.000)\n`;
+            analysis += `- Symmetry score: ${geometry.symmetry_score.toFixed(3)}\n`;
+            analysis += `- Square fit ratio: ${geometry.square_ratio.toFixed(3)}\n`;
+
+            return analysis;
+        }
+
+        function distance(p1, p2) {
+            if (!p1 || !p2) return 0;
+            return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+        }
+
+        function showLoading() {
+            document.querySelector('.upload-section').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            hideError();
+        }
+
+        function displayResults(data) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'block';
+
+            // Update score
+            const score = Math.round(data.vitruvian_score);
+            document.getElementById('scoreValue').textContent = score;
+
+            // Update score level
+            let level = 'Poor';
+            if (score >= 80) level = 'Excellent';
+            else if (score >= 60) level = 'Good';
+            else if (score >= 40) level = 'Fair';
+
+            document.getElementById('scoreLevel').textContent = level;
+
+            // Update metrics with animations
+            setTimeout(() => {
+                updateMetric('headRatio', data.proportions.head_to_total_ratio, 0.125);
+                updateMetric('armSpan', data.proportions.arm_span_to_height_ratio, 1.0);
+                updateMetric('symmetry', data.geometry.symmetry_score, 1.0);
+                updateMetric('squareFit', data.geometry.square_ratio, 1.0);
+            }, 300);
+
+            // Update analysis text
+            document.getElementById('analysisText').textContent = data.analysis;
+        }
+
+        function updateMetric(elementId, value, ideal) {
+            const fillElement = document.getElementById(elementId);
+            const textElement = document.getElementById(elementId + 'Text');
+
+            // Calculate percentage for display
+            let percentage = Math.min(100, (value / Math.max(ideal, 1)) * 100);
+            if (ideal === 1.0) {
+                percentage = value * 100;
+            }
+
+            // Animate the fill
+            fillElement.style.width = percentage + '%';
+
+            // Update text
+            textElement.textContent = value.toFixed(3);
+
+            // Color coding based on how close to ideal
+            const deviation = Math.abs(value - ideal);
+            let color = '#28a745'; // Green for good
+            if (deviation > ideal * 0.2) color = '#ffc107'; // Yellow for okay
+            if (deviation > ideal * 0.4) color = '#dc3545'; // Red for poor
+
+            fillElement.style.background = color;
+        }
+
+        function resetAnalysis() {
+            document.getElementById('imageInput').value = '';
+            document.querySelector('.upload-section').style.display = 'block';
+            document.getElementById('analysisSection').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            hideError();
+
+            // Reset metrics
+            const metrics = ['headRatio', 'armSpan', 'symmetry', 'squareFit'];
+            metrics.forEach(metric => {
+                document.getElementById(metric).style.width = '0%';
+                document.getElementById(metric + 'Text').textContent = '--';
+            });
+
+            // Reset score
+            document.getElementById('scoreValue').textContent = '--';
+            document.getElementById('scoreLevel').textContent = 'Analyzing...';
+            document.getElementById('analysisText').textContent = '';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            
+            // Hide loading and analysis sections
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('analysisSection').style.display = 'none';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
