@@ -642,6 +642,9 @@
 <body>
     <div class="container">
         <header>
+            <div class="vitruvian-image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Da_Vinci_Vitruve_Luc_Viatour.jpg" alt="Leonardo da Vinci's Vitruvian Man" style="width: 200px; height: 200px; object-fit: cover; border-radius: 50%; border: 4px solid #daa520; box-shadow: 0 15px 30px rgba(139, 69, 19, 0.2); margin-bottom: 30px;">
+            </div>
             <h1>Vitruvian Man Analyzer</h1>
             <div class="subtitle">Renaissance Art & Human Proportions</div>
             <p class="description">Discover how your pose compares to Leonardo da Vinci's vision of perfect human harmony</p>
@@ -707,9 +710,8 @@
                     </div>
                     
                     <div class="analysis-text">
-                        <div class="analysis-title">🎨 Your Renaissance Analysis</div>
-                        <div id="analysisText">
-                            <!-- Detailed analysis will be populated here -->
+                        <div class="analysis-title" id="analysisText">
+                            <!-- Simple analysis will be populated here -->
                         </div>
                     </div>
                     
@@ -1016,53 +1018,15 @@
             let analysis = "";
 
             if (score >= 85) {
-                analysis = "🎨 Extraordinary! Your proportions closely match Leonardo's vision of human perfection. You embody the Renaissance ideal of harmony and mathematical beauty.";
+                analysis = "🎨 Extraordinary Renaissance perfection!";
             } else if (score >= 70) {
-                analysis = "✨ Excellent! Your pose shows strong alignment with classical proportions. You have a natural sense of balance that Renaissance artists would admire.";
+                analysis = "✨ Excellent classical proportions!";
             } else if (score >= 55) {
-                analysis = "👍 Good work! Your proportions show pleasant harmony. With some pose adjustments, you could achieve even closer alignment to the classical ideal.";
+                analysis = "👍 Good proportional harmony!";
             } else if (score >= 40) {
-                analysis = "📏 Not bad! You show potential for achieving better proportional balance. Try centering yourself and extending your arms fully for improvement.";
+                analysis = "📏 Fair geometric alignment.";
             } else {
-                analysis = "🌱 This is your starting point! Everyone begins somewhere. Try standing tall with arms outstretched wide, perfectly centered, and let the geometry guide you.";
-            }
-
-            // Add specific guidance
-            const headRatio = proportions.head_to_total_ratio;
-            const armSpanRatio = proportions.arm_span_to_height_ratio;
-            const symmetry = geometry.symmetry_score;
-            const squareFit = geometry.square_ratio;
-
-            analysis += "\n\n📊 What the measurements mean:\n\n";
-
-            // Head proportion explanation
-            if (Math.abs(headRatio - 0.125) < 0.03) {
-                analysis += "👑 Your head size is perfectly proportioned to your height - just like in classical art!\n\n";
-            } else {
-                analysis += "👑 Your head-to-height ratio differs from the classical ideal (1:8). This is completely normal - everyone's unique!\n\n";
-            }
-
-            // Arm span explanation
-            if (Math.abs(armSpanRatio - 1.0) < 0.1) {
-                analysis += "🤲 Wonderful! Your arm span nearly matches your height, creating beautiful geometric balance.\n\n";
-            } else if (armSpanRatio < 0.9) {
-                analysis += "🤲 Try extending your arms wider - Leonardo believed arm span should equal height for perfect harmony.\n\n";
-            } else {
-                analysis += "🤲 Your arms create a wide, generous span. Try bringing them in slightly for classical proportions.\n\n";
-            }
-
-            // Symmetry explanation
-            if (symmetry > 0.8) {
-                analysis += "⚖️ Excellent symmetry! Your left and right sides are well-balanced.\n\n";
-            } else {
-                analysis += "⚖️ Try centering your pose more evenly - symmetry was key to Renaissance beauty.\n\n";
-            }
-
-            // Square fit explanation
-            if (squareFit > 0.8) {
-                analysis += "⬜ Beautiful! You fit nicely within a square shape, just like da Vinci's drawing.";
-            } else {
-                analysis += "⬜ Your pose extends beyond a square shape. Try a more compact, centered stance.";
+                analysis = "🌱 Beginning proportional journey.";
             }
 
             return analysis;
@@ -1150,6 +1114,9 @@
             document.getElementById('analysisSection').style.display = 'none';
             document.getElementById('loading').style.display = 'none';
             hideError();
+            
+            // Reset analysis text
+            document.getElementById('analysisText').textContent = '';
         }
 
         function showError(message) {
