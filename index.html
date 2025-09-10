@@ -1054,14 +1054,21 @@
         }
 
         function drawPoseVisualization(keypoints, bodyPoints, originalWidth, originalHeight) {
-            const canvas = document.getElementById('poseCanvas');
-            const img = document.getElementById('previewImage');
-            const ctx = canvas.getContext('2d');
-
-            // Wait for image to load and get its displayed dimensions
-            img.onload = function() {
+            // Use setTimeout to ensure the image is displayed first
+            setTimeout(() => {
+                const canvas = document.getElementById('poseCanvas');
+                const img = document.getElementById('previewImage');
+                
+                if (!canvas || !img) {
+                    console.error('Canvas or image not found');
+                    return;
+                }
+                
+                const ctx = canvas.getContext('2d');
                 const displayedWidth = img.offsetWidth;
                 const displayedHeight = img.offsetHeight;
+                
+                console.log('Drawing pose visualization:', displayedWidth, displayedHeight);
                 
                 // Set canvas size to match displayed image
                 canvas.width = displayedWidth;
@@ -1076,132 +1083,101 @@
                 // Clear canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+                // Test draw - draw a visible red circle to confirm canvas works
+                ctx.fillStyle = 'red';
+                ctx.beginPath();
+                ctx.arc(50, 50, 20, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                console.log('Drawing skeleton with keypoints:', keypoints.length);
+
                 // Draw pose skeleton
                 drawSkeleton(ctx, keypoints, scaleX, scaleY);
                 
                 // Draw measurement lines
                 drawMeasurementLines(ctx, bodyPoints, scaleX, scaleY);
-            };
-
-            // If image is already loaded
-            if (img.complete) {
-                img.onload();
-            }
+            }, 500); // Wait 500ms for image to render
         }
 
         function drawSkeleton(ctx, keypoints, scaleX, scaleY) {
+            console.log('drawSkeleton called with', keypoints.length, 'keypoints');
+            
+            // Draw keypoints first - make them very visible
+            keypoints.forEach((keypoint, i) => {
+                if (keypoint.score > 0.2) { // Lower threshold
+                    const x = keypoint.position.x * scaleX;
+                    const y = keypoint.position.y * scaleY;
+                    
+                    console.log(`Drawing keypoint ${i} at (${x}, ${y})`);
+                    
+                    // Large, bright colored circles
+                    ctx.fillStyle = '#ff0000'; // Bright red for visibility
+                    ctx.beginPath();
+                    ctx.arc(x, y, 10, 0, 2 * Math.PI); // Larger circles
+                    ctx.fill();
+                    
+                    // Bright white border
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                }
+            });
+
+            // Draw connections with bright colors
             const adjacentKeyPoints = [
                 [5, 6], [5, 7], [7, 9], [6, 8], [8, 10], // Arms
                 [5, 11], [6, 12], [11, 12], // Torso
-                [11, 13], [13, 15], [12, 14], [14, 16], // Legs
-                [1, 2], [0, 1], [0, 2] // Face
+                [11, 13], [13, 15], [12, 14], [14, 16] // Legs
             ];
 
-            // Draw connections
-            ctx.strokeStyle = '#daa520';
-            ctx.lineWidth = 3;
-            ctx.shadowColor = 'rgba(218, 165, 32, 0.3)';
-            ctx.shadowBlur = 5;
+            ctx.strokeStyle = '#00ff00'; // Bright green lines
+            ctx.lineWidth = 4; // Thicker lines
+            ctx.setLineDash([]); // Solid lines
 
             adjacentKeyPoints.forEach(([i, j]) => {
                 const kp1 = keypoints[i];
                 const kp2 = keypoints[j];
                 
-                if (kp1.score > 0.3 && kp2.score > 0.3) {
+                if (kp1 && kp2 && kp1.score > 0.2 && kp2.score > 0.2) {
                     ctx.beginPath();
                     ctx.moveTo(kp1.position.x * scaleX, kp1.position.y * scaleY);
                     ctx.lineTo(kp2.position.x * scaleX, kp2.position.y * scaleY);
                     ctx.stroke();
-                }
-            });
-
-            // Draw keypoints
-            ctx.shadowBlur = 0;
-            keypoints.forEach((keypoint, i) => {
-                if (keypoint.score > 0.3) {
-                    const x = keypoint.position.x * scaleX;
-                    const y = keypoint.position.y * scaleY;
-                    
-                    // Different colors for different body parts
-                    if ([0, 1, 2].includes(i)) {
-                        ctx.fillStyle = '#ff6b6b'; // Head - red
-                    } else if ([5, 6, 7, 8, 9, 10].includes(i)) {
-                        ctx.fillStyle = '#4ecdc4'; // Arms - teal
-                    } else if ([11, 12].includes(i)) {
-                        ctx.fillStyle = '#45b7d1'; // Hips - blue
-                    } else {
-                        ctx.fillStyle = '#96ceb4'; // Legs - green
-                    }
-                    
-                    ctx.beginPath();
-                    ctx.arc(x, y, 6, 0, 2 * Math.PI);
-                    ctx.fill();
-                    
-                    // White border
-                    ctx.strokeStyle = 'white';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
+                    console.log(`Drew line from keypoint ${i} to ${j}`);
                 }
             });
         }
 
         function drawMeasurementLines(ctx, bodyPoints, scaleX, scaleY) {
-            if (!bodyPoints.nose || !bodyPoints.leftShoulder || !bodyPoints.rightShoulder) return;
+            console.log('drawMeasurementLines called');
+            
+            // Draw bright blue measurement lines that are very visible
+            ctx.strokeStyle = '#0000ff'; // Bright blue
+            ctx.lineWidth = 5; // Very thick
+            ctx.setLineDash([10, 5]); // Dashed pattern
 
-            // Draw measurement lines with labels
-            ctx.strokeStyle = '#ff4757';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);
-
-            // Head to shoulder measurement
-            const shoulderCenter = {
-                x: (bodyPoints.leftShoulder.x + bodyPoints.rightShoulder.x) / 2,
-                y: (bodyPoints.leftShoulder.y + bodyPoints.rightShoulder.y) / 2
-            };
-
-            ctx.beginPath();
-            ctx.moveTo(bodyPoints.nose.x * scaleX, bodyPoints.nose.y * scaleY);
-            ctx.lineTo(shoulderCenter.x * scaleX, shoulderCenter.y * scaleY);
-            ctx.stroke();
-
-            // Arm span measurement
+            // Arm span measurement - most visible
             if (bodyPoints.leftWrist && bodyPoints.rightWrist) {
-                ctx.strokeStyle = '#ffa502';
                 ctx.beginPath();
                 ctx.moveTo(bodyPoints.leftWrist.x * scaleX, bodyPoints.leftWrist.y * scaleY);
                 ctx.lineTo(bodyPoints.rightWrist.x * scaleX, bodyPoints.rightWrist.y * scaleY);
                 ctx.stroke();
-            }
-
-            // Total height measurement
-            if (bodyPoints.leftAnkle && bodyPoints.rightAnkle) {
-                const ankleCenter = {
-                    x: (bodyPoints.leftAnkle.x + bodyPoints.rightAnkle.x) / 2,
-                    y: (bodyPoints.leftAnkle.y + bodyPoints.rightAnkle.y) / 2
-                };
-
-                ctx.strokeStyle = '#2ed573';
-                ctx.beginPath();
-                ctx.moveTo(bodyPoints.nose.x * scaleX, bodyPoints.nose.y * scaleY);
-                ctx.lineTo(ankleCenter.x * scaleX, ankleCenter.y * scaleY);
-                ctx.stroke();
+                console.log('Drew arm span line');
+                
+                // Add big text label
+                ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#000000';
+                ctx.font = 'bold 20px Arial';
+                ctx.textAlign = 'center';
+                ctx.lineWidth = 2;
+                const midX = ((bodyPoints.leftWrist.x + bodyPoints.rightWrist.x) / 2) * scaleX;
+                const midY = ((bodyPoints.leftWrist.y + bodyPoints.rightWrist.y) / 2) * scaleY;
+                ctx.strokeText('ARM SPAN', midX, midY - 20);
+                ctx.fillText('ARM SPAN', midX, midY - 20);
             }
 
             // Reset line dash
             ctx.setLineDash([]);
-
-            // Add measurement labels
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-            ctx.font = 'bold 12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('Head', bodyPoints.nose.x * scaleX, (bodyPoints.nose.y * scaleY) - 10);
-            
-            if (bodyPoints.leftWrist && bodyPoints.rightWrist) {
-                ctx.fillText('Arm Span', 
-                    ((bodyPoints.leftWrist.x + bodyPoints.rightWrist.x) / 2) * scaleX, 
-                    ((bodyPoints.leftWrist.y + bodyPoints.rightWrist.y) / 2) * scaleY - 10
-                );
-            }
         }
 
         function displayResults(data) {
